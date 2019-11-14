@@ -18,6 +18,7 @@ This application uses a PostgreSQL database.
 -  Maven
 -  Java11
 -  IntelliJ IDEA
+-  Postman
 
 address: localhost:8080
 
