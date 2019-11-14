@@ -3,6 +3,22 @@ Book Rental Service
 
 This application uses a PostgreSQL database.
 
+**Things to be done:**
+-  Responses for all of the crud operations.
+-  Validation
+-  Tests
+-  Front-end (Probably React)
+-  Documentation
+
+**Technologies & Tools used:**
+-  Spring web
+-  JPA
+-  Lombok
+-  PostgreSQL
+-  Maven
+-  Java11
+-  IntelliJ IDEA
+
 address: localhost:8080
 
 - **Creating new user:**  
