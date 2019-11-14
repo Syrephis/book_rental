@@ -19,6 +19,7 @@ This application uses a PostgreSQL database.
 -  Java11
 -  IntelliJ IDEA
 -  Postman
+-  Docker
 
 address: localhost:8080
 
