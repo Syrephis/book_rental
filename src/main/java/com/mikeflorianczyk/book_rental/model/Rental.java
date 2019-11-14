@@ -21,13 +21,12 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long bookingId;
-    @OneToOne//(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(referencedColumnName = "isbn", nullable = false)
     private Book book;
-    @OneToOne//(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
-    //@CreatedDate JPAAuditing must be enabled.
     private LocalDate issueDate = LocalDate.now();
     private LocalDate returnDate, predictedReturnDate = LocalDate.now().plusMonths(2);
 

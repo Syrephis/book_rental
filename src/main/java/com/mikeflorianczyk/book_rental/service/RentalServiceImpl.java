@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,16 +38,6 @@ public class RentalServiceImpl implements RentalService {
     public void returnBook(Long bookingId) {
         Rental rental = getRental(bookingId).orElse(null);
         rental.setReturnDate(LocalDate.now());
-        rentalRepository.save(rental);
-    }
-
-    //Does this belong here?
-    @Override
-    public void updatePredictedReturnDate(Rental rental) {
-        //Calendar temp = (Calendar) rental.getIssueDate().clone();
-        LocalDate temp = rental.getIssueDate();
-        temp.plus(2, ChronoUnit.MONTHS);
-        rental.setPredictedReturnDate(temp);
         rentalRepository.save(rental);
     }
 }

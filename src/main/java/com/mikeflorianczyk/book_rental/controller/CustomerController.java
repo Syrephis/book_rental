@@ -20,14 +20,6 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    /*
-     * from -> https://hellokoding.com/full-stack-crud-web-app-and-restful-apis-web-services-example-with-spring-boot-jpa-hibernate-mysql-vuejs-and-docker/
-     *
-    @GetMapping()
-    public ResponseEntity<List<Customer>> findAll() {
-        return ResponseEntity.ok(customerService.findAll());
-    }
-    */
     @GetMapping
     public List<Customer> findAll() {
         return customerService.findAll();

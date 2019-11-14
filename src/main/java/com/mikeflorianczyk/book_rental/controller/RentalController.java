@@ -44,7 +44,6 @@ public class RentalController {
         if (status == Status.AVAILABLE && account == 0) {
             rentalService.rentBook(rental);
             bookService.updateStatus(rental.getBook().getISBN(), Status.RENTED);
-            //rentalService.updatePredictedReturnDate(rental);
         }
     }
 

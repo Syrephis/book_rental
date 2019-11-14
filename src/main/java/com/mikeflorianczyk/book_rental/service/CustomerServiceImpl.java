@@ -18,14 +18,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    /*
-     * Lombok @RequiredArgsConstructor does it.
-     *
-    @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-    */
     @Override
     public List<Customer> findAll() {
         return customerRepository.findAll();
