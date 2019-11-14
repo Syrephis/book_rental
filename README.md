@@ -5,20 +5,20 @@ This application uses a PostgreSQL database.
 
 address: localhost:8080
 
-- Creating new user:  
+- **Creating new user:  **
   POST: /customers
   <pre><code>{
         "firstName": "Adam",
         "lastName": "Novak",
         "account": (default is 0.0)
   }</code></pre>
-- Deleting user:  
+- **Deleting user:  **
   DELETE: /customers/id  
-- Displaying all users:  
+- **Displaying all users:  **
   GET: /customers  
-- Displaying single user:  
+- **Displaying single user:  **
   GET: /customers/id  
-- Add new book:  
+- **Add new book:  **
   POST: /books
   <pre><code>{
         "bookTitle": "Szpony i kły",
@@ -27,11 +27,11 @@ address: localhost:8080
         "status": (default is UNAVAILABLE) Status {AVAILABLE, UNAVAILABLE, RENTED}
         "isbn": 9788375781557
   }</pre></code>
-- Delete book:  
+- **Delete book:  **
   DELETE /books/isbn  
-- Displaying all books:  
+- **Displaying all books:  **
   GET: /books  
-- Renting a book:  
+- **Renting a book:  **
   POST: /rentals  
   <pre><code>{
     "book": {
@@ -41,7 +41,7 @@ address: localhost:8080
       "id": 4
     }
   }</pre></code>
-- Returning a book:  
+- **Returning a book:  **
   PUT: /rentals/bookingId  
-- Displaying all rentals:  
+- **Displaying all rentals:  **
   GET: /rentals  
