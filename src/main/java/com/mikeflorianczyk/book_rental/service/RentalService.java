@@ -16,4 +16,7 @@ public interface RentalService {
 
     void rentBook(Rental rental);
 
+    void updatePredictedReturnDate(Rental rental);
+
+    void returnBook(Long bookingId);
 }

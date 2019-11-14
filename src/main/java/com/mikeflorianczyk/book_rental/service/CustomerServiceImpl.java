@@ -3,10 +3,8 @@ package com.mikeflorianczyk.book_rental.service;
 import com.mikeflorianczyk.book_rental.model.Customer;
 import com.mikeflorianczyk.book_rental.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,6 +1,7 @@
 package com.mikeflorianczyk.book_rental.model;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 

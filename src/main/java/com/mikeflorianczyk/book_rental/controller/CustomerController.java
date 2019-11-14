@@ -1,11 +1,8 @@
 package com.mikeflorianczyk.book_rental.controller;
 
 import com.mikeflorianczyk.book_rental.model.Customer;
-import com.mikeflorianczyk.book_rental.repository.CustomerRepository;
 import com.mikeflorianczyk.book_rental.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

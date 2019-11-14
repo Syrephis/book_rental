@@ -1,7 +1,6 @@
 package com.mikeflorianczyk.book_rental.controller;
 
 import com.mikeflorianczyk.book_rental.model.Book;
-import com.mikeflorianczyk.book_rental.model.Status;
 import com.mikeflorianczyk.book_rental.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +45,4 @@ public class BookController {
         bookService.updateBook(book);
     }
 
-    /*
-    @PutMapping("/{ISBN}")
-    public void updateStatus(@PathVariable Long ISBN) {
-        bookService.updateStatus(ISBN, Status.UNAVAILABLE);
-    }
-     */
 }

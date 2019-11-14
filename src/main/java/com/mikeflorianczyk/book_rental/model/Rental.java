@@ -1,13 +1,10 @@
 package com.mikeflorianczyk.book_rental.model;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-
-import java.util.Calendar;
+import java.time.LocalDate;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -30,8 +27,8 @@ public class Rental {
     @OneToOne//(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
-    @CreatedDate
-    private Calendar issueDate, predictedReturnDate;
-    private Calendar returnDate;
+    //@CreatedDate JPAAuditing must be enabled.
+    private LocalDate issueDate = LocalDate.now();
+    private LocalDate returnDate, predictedReturnDate = LocalDate.now().plusMonths(2);
 
 }
