@@ -1,6 +1,9 @@
 package com.mikeflorianczyk.book_rental.service;
 
 import com.mikeflorianczyk.book_rental.model.Customer;
+import com.mikeflorianczyk.book_rental.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,14 +11,25 @@ import java.util.Optional;
 /**
  * @author mikeflorianczyk
  */
-public interface CustomerService {
+@RequiredArgsConstructor
+@Service
+public class CustomerService {
 
-    List<Customer> findAll();
+    private final CustomerRepository customerRepository;
 
-    Optional<Customer> getCustomer(Long id);
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
+    }
 
-    void addCustomer(Customer customer);
+    public Optional<Customer> getCustomer(Long id) {
+        return customerRepository.findById(id);
+    }
 
-    void deleteCustomer(Long id);
+    public void addCustomer(Customer customer) {
+        customerRepository.save(customer);
+    }
 
+    public void deleteCustomer(Long id) {
+        customerRepository.deleteById(id);
+    }
 }

@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "books")
 public class Book {
 
+    //TODO @NaturalId
     @Id
     @Column(nullable = false)
     private Long ISBN;

@@ -20,6 +20,7 @@ public class BookController {
 
     private final BookService bookService;
 
+    //TODO Filtering
     @GetMapping
     public List<Book> findAll() {
         return bookService.findAll();
@@ -35,6 +36,7 @@ public class BookController {
         bookService.deleteBook(ISBN);
     }
 
+    //FIXME Shouldn't be able to update using post.
     @PostMapping
     public void addbook(@Valid @RequestBody Book book) {
         bookService.addBook(book);

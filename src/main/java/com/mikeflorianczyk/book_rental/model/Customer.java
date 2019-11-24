@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -23,6 +24,8 @@ public class Customer {
     @Column(nullable = false)
     private String firstName, lastName;
     @Column(nullable = false)
-    private Float account = 0.0f;
-
+    //TODO BigDecimal
+    private BigDecimal account = new BigDecimal("0.0");
+    //@OneToMany(mappedBy = "customer")
+    //private List<Rental> rentals;
 }

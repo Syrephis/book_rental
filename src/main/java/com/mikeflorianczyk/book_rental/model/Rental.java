@@ -18,6 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EntityListeners(AuditingEntityListener.class)
 public class Rental {
 
+    //TODO check persistence relations.
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long bookingId;

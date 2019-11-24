@@ -2,6 +2,9 @@ package com.mikeflorianczyk.book_rental.service;
 
 import com.mikeflorianczyk.book_rental.model.Book;
 import com.mikeflorianczyk.book_rental.model.Status;
+import com.mikeflorianczyk.book_rental.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,17 +12,36 @@ import java.util.Optional;
 /**
  * @author mikeflorianczyk
  */
-public interface BookService {
+@RequiredArgsConstructor
+@Service
+public class BookService {
 
-    List<Book> findAll();
+    private final BookRepository bookRepository;
 
-    Optional<Book> getBook(Long ISBN);
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
 
-    void addBook(Book book);
+    public Optional<Book> getBook(Long ISBN) {
+        return bookRepository.findById(ISBN);
+    }
 
-    void deleteBook(Long ISBN);
+    public void addBook(Book book) {
+        bookRepository.save(book);
+    }
 
-    void updateBook(Book book);
+    public void deleteBook(Long ISBN) {
+        bookRepository.deleteById(ISBN);
+    }
 
-    void updateStatus(Long ISBN, Status status);
+    public void updateBook(Book book) {
+        bookRepository.save(book);
+    }
+
+    public void updateStatus(Long ISBN, Status status) {
+        Book book = getBook(ISBN).orElse(null);
+        book.setStatus(status);
+        bookRepository.save(book);
+    }
+
 }
