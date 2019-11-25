@@ -23,7 +23,7 @@ public class Rental {
     @GeneratedValue(strategy = IDENTITY)
     private Long bookingId;
     @OneToOne
-    @JoinColumn(referencedColumnName = "isbn", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Book book;
     @OneToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)

@@ -3,6 +3,7 @@ package com.mikeflorianczyk.book_rental.controller;
 import com.mikeflorianczyk.book_rental.model.Book;
 import com.mikeflorianczyk.book_rental.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,20 +27,19 @@ public class BookController {
         return bookService.findAll();
     }
 
-    @GetMapping("/{ISBN}")
-    public Optional<Book> getbook(@PathVariable Long ISBN) {
-        return bookService.getBook(ISBN);
+    @GetMapping("/{id}")
+    public Optional<Book> getbook(@PathVariable Long id) {
+        return bookService.getBook(id);
     }
 
-    @DeleteMapping("/{ISBN}")
-    public void deletebook(@PathVariable Long ISBN) {
-        bookService.deleteBook(ISBN);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletebook(@PathVariable Long id) {
+        return bookService.deleteBook(id);
     }
 
-    //FIXME Shouldn't be able to update using post.
     @PostMapping
-    public void addbook(@Valid @RequestBody Book book) {
-        bookService.addBook(book);
+    public ResponseEntity<String> addbook(@Valid @RequestBody Book book) {
+        return bookService.addBook(book);
     }
 
     @PutMapping
