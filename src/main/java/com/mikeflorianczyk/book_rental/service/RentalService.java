@@ -22,7 +22,7 @@ import java.util.Optional;
 public class RentalService {
 
     private static final BigDecimal BASECOST = new BigDecimal("2.0");
-    private static final BigDecimal OVERDUEDAYCOST = new BigDecimal("2.0");
+    private static final BigDecimal OVERDUEDAYCOST = new BigDecimal("0.5");
     private static final int DAYSLIMIT = 7;
 
     private final RentalRepository rentalRepository;
@@ -59,7 +59,7 @@ public class RentalService {
         rentalRepository.save(rental);
         int daysOverdue = (int) ChronoUnit.DAYS.between(rental.getPredictedReturnDate(), rental.getReturnDate());
         if (daysOverdue > 0) {
-            BigDecimal cost = BASECOST.add(BigDecimal.valueOf((daysOverdue > DAYSLIMIT ? daysOverdue : DAYSLIMIT) - DAYSLIMIT)).multiply(OVERDUEDAYCOST);
+            BigDecimal cost = BASECOST.add(BigDecimal.valueOf((daysOverdue > DAYSLIMIT ? daysOverdue : DAYSLIMIT) - DAYSLIMIT).multiply(OVERDUEDAYCOST));
             rental.getCustomer().setAccount(rental.getCustomer().getAccount().add(cost));
             customerService.addCustomer(rental.getCustomer());
         }
