@@ -28,4 +28,20 @@ public class Customer {
     private BigDecimal account = new BigDecimal("0.0");
     //@OneToMany(mappedBy = "customer")
     //private List<Rental> rentals;
+
+    public Customer() {
+    }
+
+    public Customer(String firstName, String lastName, BigDecimal account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
+
+    public Customer(long id, String firstName, String lastName, BigDecimal account) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
 }

@@ -30,4 +30,22 @@ public class Book implements Cloneable {
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNAVAILABLE;
 
+    public Book() {}
+
+    public Book(String ISBN, String title, String author, String publisher, Status status) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.status = status;
+    }
+
+    public Book(long id, String ISBN, String title, String author, String publisher, Status status) {
+        this.id = id;
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.status = status;
+    }
 }

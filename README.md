@@ -1,5 +1,5 @@
 # book_rental
-Book Rental Service
+RESTful Book Rental Service
 
 This application uses a PostgreSQL database.
 

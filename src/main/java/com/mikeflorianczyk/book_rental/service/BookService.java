@@ -4,9 +4,12 @@ import com.mikeflorianczyk.book_rental.model.Book;
 import com.mikeflorianczyk.book_rental.model.Status;
 import com.mikeflorianczyk.book_rental.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,45 +31,63 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
+    //FIXME Throws DataIntegrityViolationException because of already existing ISBN. OK but change to custom message
     public ResponseEntity<String> addBook(Book book) {
-        if (isbnValidation(book.getISBN()) == true) {
+        if (checkIfExists(book))
+            return new ResponseEntity<String>("Book with provided ID already exists.", HttpStatus.BAD_REQUEST);
+        if (isbnValidation(book.getISBN())) {
             bookRepository.save(book);
-            return new ResponseEntity<>("Book has been successfully added to the database.", HttpStatus.OK);
+            return new ResponseEntity<>("Book has been successfully added to the database.", HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("The provided ISBN is incorret.", HttpStatus.PRECONDITION_FAILED);
+        return new ResponseEntity<>("The provided ISBN is incorrect. The ISBN should be either 10 or 13 digits long and should only contain numeric characters. Ex: 9992158107", HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<String> deleteBook(Long id) {
-        bookRepository.deleteById(id);
-        return new ResponseEntity<>("Book has been successfully deleted.", HttpStatus.OK);
+        if (checkIfExists(bookRepository.getOne(id))) {
+            bookRepository.deleteById(id);
+            return new ResponseEntity<>("Book has been successfully deleted.", HttpStatus.OK);
+        } return new ResponseEntity<String>("Book with provided ID doesn't exist.", HttpStatus.BAD_REQUEST);
     }
 
-    public void updateBook(Book book) {
-        if (bookRepository.getOne(book.getId()) != null) {
-            bookRepository.save(book);
+    public ResponseEntity<String> updateBook(Book book) {
+        if (checkIfExists(book)) {
+            if (isbnValidation(book.getISBN())) {
+                bookRepository.save(book);
+                return new ResponseEntity<>("Book has been updated!", HttpStatus.OK);
+            } return new ResponseEntity<>("The provided ISBN is incorrect. The ISBN should be either 10 or 13 digits long and should only contain numeric characters. Ex: 9992158107", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Book with provided ID doesn't exist.", HttpStatus.BAD_REQUEST);
     }
 
-    public void updateStatus(Long id, Status status) {
+    void updateStatus(Long id, Status status) {
         Book book = bookRepository.getOne(id);
         book.setStatus(status);
         bookRepository.save(book);
     }
 
-    private boolean isbnValidation(String ISBN) {
-        ISBN = ISBN.replaceAll("-", "");
-        char[] digits = ISBN.toCharArray();
+    private boolean checkIfExists(Book book) {
+        if (book.getId() == null) return false;
+        return bookRepository.existsById(book.getId());
+    }
 
-        if (digits.length == 10) {
-            int sum = 0;
-            for (int i = 0, j = 10; i < 10; i++, j--) sum += Character.getNumericValue(digits[i]) * j;
-            if (sum % 11 == 0) return true;
-        }
-        if (digits.length == 13) {
-            int sum = 0;
-            for (int i = 0; i < 13; i++)
-                sum += (i % 2 == 0) ? Character.getNumericValue(digits[i]) * 1 : Character.getNumericValue(digits[i]) * 3;
-            if (sum % 10 == 0) return true;
+    //TODO create as annotation
+    private boolean isbnValidation(String ISBN) {
+        if (ISBN.matches("[0-9]+")) {
+            char[] digits = ISBN.toCharArray();
+
+            if (digits.length == 10) {
+                int sum = 0;
+                for (int i = 0, j = 10; i < 10; i++, j--) sum += Character.getNumericValue(digits[i]) * j;
+                return sum % 11 == 0;
+            }
+            if (digits.length == 13) {
+                int sum = 0;
+                for (int i = 0; i < 12; i++)
+                    sum += (i % 2 == 0) ? Character.getNumericValue(digits[i]) : Character.getNumericValue(digits[i]) * 3;
+                int checksum = 10 - (sum % 10);
+                if (checksum == 10) checksum = 0;
+                return checksum == Character.getNumericValue(digits[12]);
+            }
         }
         return false;
     }

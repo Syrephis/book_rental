@@ -31,4 +31,11 @@ public class Rental {
     private LocalDate issueDate = LocalDate.now();
     private LocalDate returnDate, predictedReturnDate = LocalDate.now().plusMonths(2);
 
+    public Rental() {}
+
+    public Rental(Book book, Customer customer) {
+        this.book = book;
+        this.customer = customer;
+    }
+
 }

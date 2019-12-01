@@ -21,6 +21,10 @@ import java.util.Optional;
 @Service
 public class RentalService {
 
+    private static final BigDecimal BASECOST = new BigDecimal("2.0");
+    private static final BigDecimal OVERDUEDAYCOST = new BigDecimal("2.0");
+    private static final int DAYSLIMIT = 7;
+
     private final RentalRepository rentalRepository;
 
     private final BookService bookService;
@@ -34,6 +38,7 @@ public class RentalService {
         return rentalRepository.findById(bookingId);
     }
 
+    //FIXME can't call methods on null.
     public ResponseEntity<String> rentBook(Rental rental) {
         Status status = bookService.getBook(rental.getBook().getId()).orElse(null).getStatus();
         if (status == Status.AVAILABLE) {
@@ -52,10 +57,10 @@ public class RentalService {
         Rental rental = getRental(bookingId).orElse(null);
         rental.setReturnDate(LocalDate.now());
         rentalRepository.save(rental);
-        long daysOverdue = ChronoUnit.DAYS.between(rental.getPredictedReturnDate(), rental.getReturnDate());
+        int daysOverdue = (int) ChronoUnit.DAYS.between(rental.getPredictedReturnDate(), rental.getReturnDate());
         if (daysOverdue > 0) {
-            double cost = 2 + ((daysOverdue > 7 ? daysOverdue : 7) - 7) * 0.5;
-            rental.getCustomer().setAccount(rental.getCustomer().getAccount().add(BigDecimal.valueOf(cost)));
+            BigDecimal cost = BASECOST.add(BigDecimal.valueOf((daysOverdue > DAYSLIMIT ? daysOverdue : DAYSLIMIT) - DAYSLIMIT)).multiply(OVERDUEDAYCOST);
+            rental.getCustomer().setAccount(rental.getCustomer().getAccount().add(cost));
             customerService.addCustomer(rental.getCustomer());
         }
         bookService.updateStatus(rental.getBook().getId(), Status.AVAILABLE);

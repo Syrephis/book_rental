@@ -22,8 +22,6 @@ import java.util.Optional;
 public class RentalController {
 
     private final RentalService rentalService;
-    private final BookService bookService;
-    private final CustomerService customerService;
 
     @GetMapping
     public List<Rental> findAll() {
