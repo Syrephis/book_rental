@@ -32,16 +32,17 @@ public class BookService {
     }
 
     //FIXME Throws DataIntegrityViolationException because of already existing ISBN. OK but change to custom message
+
     public ResponseEntity<String> addBook(Book book) {
         if (checkIfExists(book))
             return new ResponseEntity<String>("Book with provided ID already exists.", HttpStatus.BAD_REQUEST);
         if (isbnValidation(book.getISBN())) {
+            if (ifExistsByISBN(book.getISBN())) return new ResponseEntity<>("Book with provided ISBN already exists.", HttpStatus.BAD_REQUEST);
             bookRepository.save(book);
             return new ResponseEntity<>("Book has been successfully added to the database.", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("The provided ISBN is incorrect. The ISBN should be either 10 or 13 digits long and should only contain numeric characters. Ex: 9992158107", HttpStatus.BAD_REQUEST);
     }
-
     public ResponseEntity<String> deleteBook(Long id) {
         if (checkIfExists(bookRepository.getOne(id))) {
             bookRepository.deleteById(id);
@@ -63,6 +64,15 @@ public class BookService {
         Book book = bookRepository.getOne(id);
         book.setStatus(status);
         bookRepository.save(book);
+    }
+
+    private boolean ifExistsByISBN(String ISBN) {
+        Book book = new Book();
+        book.setISBN(ISBN);
+        book.setStatus(null);
+
+        Example<Book> example = Example.of(book);
+        return bookRepository.exists(example);
     }
 
     private boolean checkIfExists(Book book) {

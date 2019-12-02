@@ -3,6 +3,7 @@ package com.mikeflorianczyk.book_rental.controller;
 import com.mikeflorianczyk.book_rental.model.Book;
 import com.mikeflorianczyk.book_rental.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

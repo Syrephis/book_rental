@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity
 @Table(name = "books")
-public class Book implements Cloneable {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

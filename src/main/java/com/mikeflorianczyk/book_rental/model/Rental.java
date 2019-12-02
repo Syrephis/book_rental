@@ -15,7 +15,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity
 @Table(name = "rentals")
-@EntityListeners(AuditingEntityListener.class)
 public class Rental {
 
     //TODO check persistence relations.

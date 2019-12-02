@@ -1,12 +1,9 @@
 # book_rental
-RESTful Book Rental Service
+RESTful CRUD Book Rental Service
 
 This application uses a PostgreSQL database.
 
 **Things to be done:**
--  Responses for all of the crud operations.
--  Validation
--  Tests
 -  Front-end (Probably React)
 -  Documentation
 
@@ -17,6 +14,7 @@ This application uses a PostgreSQL database.
 -  PostgreSQL
 -  Maven
 -  Java11
+-  Junit 5
 -  IntelliJ IDEA
 -  Postman
 -  Docker
@@ -44,7 +42,7 @@ address: localhost:8080
         "publisher": "superNOWA",
         "status": (default is UNAVAILABLE) Status {AVAILABLE, UNAVAILABLE, RENTED}
         "isbn": 9788375781557
-  }</pre></code>
+  }</code></pre>
 - **Delete book:**  
   DELETE /books/isbn  
 - **Displaying all books:**  
@@ -58,7 +56,7 @@ address: localhost:8080
     "customer": {
       "id": 4
     }
-  }</pre></code>
+  }</code></pre>
 - **Returning a book:**  
   PUT: /rentals/bookingId  
 - **Displaying all rentals:**  

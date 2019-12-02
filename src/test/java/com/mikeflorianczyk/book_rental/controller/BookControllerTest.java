@@ -102,9 +102,6 @@ class BookControllerTest {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    //Throws DataIntegrityViolationException
-    //FIXME Throws DataIntegrityViolationException because of already existing ISBN.
-    @Disabled
     @DisplayName("addBook() if book already exists by ISBN")
     @Test
     void addBook_fail() throws Exception {
@@ -114,7 +111,7 @@ class BookControllerTest {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(bookToAdd)))
                 .andDo(print())
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("addBook() if book already exists by ID")
