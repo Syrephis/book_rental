@@ -1,10 +1,13 @@
 package com.mikeflorianczyk.book_rental.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -12,6 +15,8 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @author mikeflorianczyk
  */
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "books")
@@ -29,10 +34,11 @@ public class Book {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.UNAVAILABLE;
+    @Size(max = 1000)
+    private String description;
 
-    public Book() {}
-
-    public Book(String ISBN, String title, String author, String publisher, Status status) {
+    public Book(Long id, String ISBN, String title, String author, String publisher, Status status) {
+        this.id = id;
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
@@ -40,8 +46,7 @@ public class Book {
         this.status = status;
     }
 
-    public Book(long id, String ISBN, String title, String author, String publisher, Status status) {
-        this.id = id;
+    public Book(String ISBN, String title, String author, String publisher, Status status) {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;

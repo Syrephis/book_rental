@@ -16,6 +16,7 @@ import java.util.Optional;
  * @author mikeflorianczyk
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/books")
 @RequiredArgsConstructor

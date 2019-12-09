@@ -1,6 +1,8 @@
 package com.mikeflorianczyk.book_rental.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +14,8 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @author mikeflorianczyk
  */
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "customers")
@@ -29,17 +33,7 @@ public class Customer {
     //@OneToMany(mappedBy = "customer")
     //private List<Rental> rentals;
 
-    public Customer() {
-    }
-
     public Customer(String firstName, String lastName, BigDecimal account) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.account = account;
-    }
-
-    public Customer(long id, String firstName, String lastName, BigDecimal account) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.account = account;
