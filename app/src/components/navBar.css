@@ -1,0 +1,14 @@
+.navbar-brand {
+  margin-left: 1rem;
+  font-family: "Bebas Neue", cursive;
+  font-size: xx-large !important;
+}
+
+.navbar-nav {
+  margin-right: 1rem;
+  font-family: "Lato", sans-serif;
+}
+
+.nav-item {
+  color: white !important;
+}
