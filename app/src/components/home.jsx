@@ -7,6 +7,9 @@ class Home extends Component {
     return (
       <div>
         <NavBar />
+        <div>
+          <h1 className="welcome">Welcome to the Book Rental System</h1>
+        </div>
       </div>
     );
   }

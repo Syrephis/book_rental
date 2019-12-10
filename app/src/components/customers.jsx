@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Spinner from "./spinner";
 import NavBar from "./navBar";
+import { FaSearch, FaCheck } from "react-icons/fa";
 
 class Customers extends Component {
   state = {
@@ -29,35 +30,81 @@ class Customers extends Component {
       return (
         <div>
           <NavBar />
-          <div className="container">
+          <div className="container-xl">
             <div className="row">
-              <div className="col-md-4">
-                <div className="card my-4">
+              <div className="col-md-3">
+                <div className="card my-4 border-0 shadow-sm">
                   <h5 className="card-header">Search</h5>
                   <div className="card-body">
                     <div className="input-group">
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Search for..."></input>
-                      <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="button">
-                          Go!
+                      <span className="input-group-btn">
+                        <button className="btn btn-primary" type="button">
+                          <FaSearch />
                         </button>
                       </span>
                     </div>
                   </div>
                 </div>
+                <div className="card my-4 border-0 shadow-sm">
+                  <h5 class="card-header">
+                    <a
+                      class="collapsed d-block"
+                      data-toggle="collapse"
+                      href="#collapse-collapsed"
+                      aria-expanded="true"
+                      aria-controls="collapse-collapsed"
+                      id="heading-collapsed">
+                      <i class="fa fa-chevron-down pull-right"></i>
+                      Add a customer
+                    </a>
+                  </h5>
+                  <div
+                    id="collapse-collapsed"
+                    class="collapse"
+                    aria-labelledby="heading-collapsed">
+                    <div className="card-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">
+                            First Name
+                          </label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder="Adam"></input>
+                        </div>
+                        <div className="form-group">
+                          <label for="exampleFormControlInput1">
+                            Last Name
+                          </label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder="Smith"></input>
+                        </div>
+                        <button type="submit" className="btn btn-primary">
+                          Add
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="col-md-8">
-                <div className="card my-4">
+              <div className="col-md-9">
+                <div className="card my-4 border-0 shadow-sm">
                   <div className="table-responsive">
-                    <table className="table">
-                      <thead className="thead-light">
+                    <table className="table table-hover table-borderless">
+                      <thead className="thead">
                         <tr>
                           <th scope="col">First name</th>
                           <th scope="col">Last name</th>
-                          <th scope="col">Due $</th>
+                          <th scope="col">Balance $</th>
                         </tr>
                       </thead>
                       <tbody>

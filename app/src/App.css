@@ -1,5 +1,14 @@
-.entity-table {
-  margin-top: 2rem;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.055),
-    0 6px 20px 0 rgba(0, 0, 0, 0.055) !important;
+.table-responsive {
+  border-radius: 0.25rem;
+}
+
+.thead {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.card-header .fa {
+  transition: 0.3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
 }
