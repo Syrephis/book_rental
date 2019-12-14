@@ -31,7 +31,14 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    //FIXME Throws DataIntegrityViolationException because of already existing ISBN. OK but change to custom message
+    public Optional<Book> getBookByISBN(String ISBN) {
+        Book book = new Book();
+        book.setISBN(ISBN);
+        book.setStatus(null);
+
+        Example<Book> example = Example.of(book);
+        return bookRepository.findOne(example);
+    }
 
     public ResponseEntity<String> addBook(Book book) {
         if (checkIfExists(book))

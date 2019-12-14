@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Spinner from "./spinner";
 import NavBar from "./navBar";
-import { FaSearch, FaCheck } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 class Rentals extends Component {
   state = {
@@ -10,7 +10,7 @@ class Rentals extends Component {
   };
 
   async componentDidMount() {
-    fetch("/rentals")
+    await fetch("/rentals")
       .then(response => response.json())
       .then(json => {
         this.setState({ rentals: json, isLoading: false });
@@ -30,7 +30,7 @@ class Rentals extends Component {
       return (
         <div>
           <NavBar />
-          <div className="container-xl">
+          <div className="container-fluid">
             <div className="row">
               <div className="col-md-3">
                 <div className="card my-4 border-0 shadow-sm">

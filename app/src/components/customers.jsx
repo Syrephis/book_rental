@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Spinner from "./spinner";
 import NavBar from "./navBar";
-import { FaSearch, FaCheck } from "react-icons/fa";
+import { FaSearch, FaPlus } from "react-icons/fa";
 
 class Customers extends Component {
   state = {
@@ -10,7 +10,7 @@ class Customers extends Component {
   };
 
   async componentDidMount() {
-    fetch("/customers")
+    await fetch("/customers")
       .then(response => response.json())
       .then(json => {
         this.setState({ customers: json, isLoading: false });
@@ -49,49 +49,69 @@ class Customers extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card my-4 border-0 shadow-sm">
-                  <h5 class="card-header">
-                    <a
-                      class="collapsed d-block"
-                      data-toggle="collapse"
-                      href="#collapse-collapsed"
-                      aria-expanded="true"
-                      aria-controls="collapse-collapsed"
-                      id="heading-collapsed">
-                      <i class="fa fa-chevron-down pull-right"></i>
-                      Add a customer
-                    </a>
-                  </h5>
-                  <div
-                    id="collapse-collapsed"
-                    class="collapse"
-                    aria-labelledby="heading-collapsed">
-                    <div className="card-body">
-                      <form>
-                        <div class="form-group">
-                          <label for="exampleFormControlInput1">
-                            First Name
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="Adam"></input>
-                        </div>
-                        <div className="form-group">
-                          <label for="exampleFormControlInput1">
-                            Last Name
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="Smith"></input>
-                        </div>
-                        <button type="submit" className="btn btn-primary">
-                          Add
+                <button
+                  type="button"
+                  class="btn btn-primary btn-block"
+                  data-toggle="modal"
+                  data-target="#exampleModal">
+                  Add customer
+                </button>
+                <div
+                  className="modal fade"
+                  id="exampleModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
+                          New customer
+                        </h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
                         </button>
-                      </form>
+                      </div>
+                      <div className="modal-body">
+                        <form>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              First name
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="firstName"
+                              placeholder="Adam"></input>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              Last name
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="lastName"
+                              placeholder="Nowak"></input>
+                          </div>
+                        </form>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal">
+                          Cancel
+                        </button>
+                        <button type="submit" className="btn btn-primary">
+                          <FaPlus /> {" Add"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

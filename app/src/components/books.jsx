@@ -1,14 +1,58 @@
 import React, { Component } from "react";
 import Spinner from "./spinner";
 import NavBar from "./navBar";
-import { FaSearch, FaCheck, FaChevronDown } from "react-icons/fa";
+import { FaSearch, FaPlus } from "react-icons/fa";
 
 class Books extends Component {
-  //private
+  emptyBook = {
+    title: null,
+    author: null,
+    publisher: null,
+    isbn: null
+  };
+
+  emptyRental = {
+    book: {
+      id: null,
+      isbn: null
+    },
+    customer: {
+      id: null
+    }
+  };
+
   state = {
     isLoading: true,
-    books: []
+    books: [],
+    item: this.emptyBook,
+    rental: this.emptyRental
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: true,
+      books: [],
+      item: this.emptyBook,
+      rental: this.emptyRental
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRental = this.handleRental.bind(this);
+    this.handleRentalChange = this.handleRentalChange.bind(this);
+  }
+
+  // {
+  //   "id": 1,
+  //   "title": "Szpony i kły",
+  //   "author": "Andrzej Sapkowski",
+  //   "publisher": "superNOWA",
+  //   "status": "AVAILABLE",
+  //   "description": null,
+  //   "isbn": "9788375781557"
+  // },
 
   async componentDidMount() {
     /*
@@ -16,17 +60,81 @@ class Books extends Component {
     const body = await response.json();
     this.setState({ books: body, isLoading: false });
     */
-    fetch("/books")
+    await fetch("/books")
       .then(response => response.json())
       .then(json => {
         this.setState({ books: json, isLoading: false });
       });
   }
 
-  toggleAlerts() {
-    this.setState({
-      visible: !this.state.visible
+  async remove(id) {
+    await fetch("/books/" + id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    }).then(() => {
+      let updatedBooks = [...this.state.books].filter(i => i.id !== id);
+      this.setState({ books: updatedBooks });
     });
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    let item = { ...this.state.item };
+    item[name] = value;
+    this.setState({ item });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const item = this.state.item;
+
+    await fetch("/books", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    });
+    console.log(JSON.stringify(item));
+    this.props.history.push("/books");
+  }
+
+  handleRentalChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name.split(".");
+
+    let rental = { ...this.state.rental };
+    rental[name[0]][name[1]] = value;
+    this.setState({ rental });
+  }
+
+  async handleRental(event) {
+    event.preventDefault();
+    const rental = this.state.rental;
+    await fetch("/books/ISBN/" + rental.book.isbn)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({ rental: json });
+        console.log(json);
+      });
+
+    await fetch("/rentals", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(rental)
+    });
+    console.log(JSON.stringify(rental));
   }
 
   render() {
@@ -42,7 +150,7 @@ class Books extends Component {
       return (
         <div>
           <NavBar />
-          <div className="container-xl">
+          <div className="container-fluid">
             <div className="row">
               <div className="col-md-3">
                 <div className="card my-4 border-0 shadow-sm">
@@ -54,7 +162,7 @@ class Books extends Component {
                         className="form-control"
                         placeholder="Search for..."></input>
                       <span className="input-group-btn">
-                        <button className="btn btn-primary" type="button">
+                        <button className="btn btn-primary" type="submit">
                           <FaSearch />
                         </button>
                       </span>
@@ -64,87 +172,156 @@ class Books extends Component {
                 <div className="card my-4 border-0 shadow-sm">
                   <h5 className="card-header">Rent</h5>
                   <div className="card-body">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="ISBN"></input>
-                      <span className="input-group-btn">
-                        <button className="btn btn-primary" type="button">
-                          <FaCheck />
-                        </button>
-                      </span>
-                    </div>
+                    <form onSubmit={this.handleRental}>
+                      <div className="form-group">
+                        <label htmlFor="exampleFormControlInput1">ISBN</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="book.isbn"
+                          name="book.isbn"
+                          onChange={this.handleRentalChange}
+                          placeholder="9788375781557"></input>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="exampleFormControlInput1">
+                          Customer ID
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="customer.id"
+                          name="customer.id"
+                          onChange={this.handleRentalChange}
+                          placeholder="1"></input>
+                      </div>
+                      <button
+                        className="btn btn-primary btn-block"
+                        type="submit">
+                        Rent
+                      </button>
+                    </form>
                   </div>
                 </div>
-                <div className="card my-4 border-0 shadow-sm">
-                  <h5 class="card-header">
-                    <a
-                      class="collapsed d-block"
-                      data-toggle="collapse"
-                      href="#collapse-collapsed"
-                      aria-expanded="true"
-                      aria-controls="collapse-collapsed"
-                      id="heading-collapsed">
-                      <i class="fa fa-chevron-down pull-right"></i>
-                      Add a book
-                    </a>
-                  </h5>
-                  <div
-                    id="collapse-collapsed"
-                    class="collapse"
-                    aria-labelledby="heading-collapsed">
-                    <div className="card-body">
-                      <form>
-                        <div class="form-group">
-                          <label for="exampleFormControlInput1">ISBN</label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="9788375781557"></input>
-                        </div>
-                        <div className="form-group">
-                          <label for="exampleFormControlInput1">Title</label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="Ostatnie życzenie"></input>
-                        </div>
-                        <div className="form-group">
-                          <label for="exampleFormControlInput1">Author</label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="Andrzej Sapkowski"></input>
-                        </div>
-                        <div className="form-group">
-                          <label for="exampleFormControlInput1">
-                            Publisher
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="exampleFormControlInput1"
-                            placeholder="superNOWA"></input>
-                        </div>
-                        <div className="form-group form-check">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="exampleCheck1"></input>
-                          <label
-                            className="form-check-label"
-                            for="exampleCheck1">
-                            Available
-                          </label>
-                        </div>
-                        <button type="submit" className="btn btn-primary">
-                          Add
+                <button
+                  type="button"
+                  className="btn btn-primary btn-block"
+                  data-toggle="modal"
+                  data-target="#addBook">
+                  Add book
+                </button>
+                <div
+                  className="modal fade"
+                  id="addBook"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="newBook">
+                          New book
+                        </h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
                         </button>
-                      </form>
+                      </div>
+                      <div className="modal-body">
+                        <form id="newBookForm" onSubmit={this.handleSubmit}>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              ISBN
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="isbn"
+                              name="isbn"
+                              onChange={this.handleChange}
+                              placeholder="9788375781557"></input>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              Title
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="title"
+                              name="title"
+                              onChange={this.handleChange}
+                              placeholder="Ostatnie życzenie"></input>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              Author
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="author"
+                              name="author"
+                              onChange={this.handleChange}
+                              placeholder="Andrzej Sapkowski"></input>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">
+                              Publisher
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="publisher"
+                              name="publisher"
+                              onChange={this.handleChange}
+                              placeholder="superNOWA"></input>
+                          </div>
+                          <div className="form-group form-check">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              id="status"
+                              name="status"
+                              value="AVAILABLE"
+                              onChange={this.handleChange}></input>
+                            <label
+                              className="form-check-label"
+                              htmlFor="exampleCheck1">
+                              Available
+                            </label>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="exampleFormControlTextarea1">
+                              Description
+                            </label>
+                            <textarea
+                              className="form-control"
+                              id="description"
+                              name="description"
+                              onChange={this.handleChange}
+                              rows="5"></textarea>
+                          </div>
+                        </form>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal">
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          form="newBookForm"
+                          className="btn btn-primary">
+                          <FaPlus /> {" Add"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -160,6 +337,7 @@ class Books extends Component {
                           <th scope="col">Publisher</th>
                           <th scope="col">ISBN</th>
                           <th scope="col">Status</th>
+                          <th scope="col" />
                         </tr>
                       </thead>
                       <tbody>
@@ -170,6 +348,13 @@ class Books extends Component {
                             <td>{book.publisher}</td>
                             <td>{book.isbn}</td>
                             <td>{book.status}</td>
+                            <td>
+                              <button
+                                className="btn btn-danger"
+                                onClick={() => this.remove(book.id)}>
+                                Delete
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>

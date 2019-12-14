@@ -39,6 +39,14 @@ public class BookController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/ISBN/{ISBN}")
+    public ResponseEntity<?> getBookByISBN(@PathVariable String ISBN) {
+        Optional<Book> book = bookService.getBookByISBN(ISBN);
+        if (book.isPresent()) return new ResponseEntity<>(book, HttpStatus.OK);
+        String message = String.format("Book with ISBN: %s couldn't be found.", ISBN);
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         return bookService.deleteBook(id);
