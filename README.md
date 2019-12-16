@@ -1,10 +1,10 @@
 # Book Rental Service
 RESTful CRUD Book Rental Service
 
-##Things to be done
+## Things to be done
 -  Documentation
 
-##Technologies & Tools used
+## Technologies & Tools used
 -  Spring web
 -  JPA
 -  Lombok
@@ -21,7 +21,7 @@ RESTful CRUD Book Rental Service
 -  HTML
 -  CSS
 
-##Backend API
+## Backend API
 
 - **Creating new user:**  
   POST: /customers
