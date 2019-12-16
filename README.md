@@ -1,13 +1,10 @@
-# book_rental
+# Book Rental Service
 RESTful CRUD Book Rental Service
 
-This application uses a PostgreSQL database.
-
-**Things to be done:**
--  Front-end (Probably React)
+##Things to be done
 -  Documentation
 
-**Technologies & Tools used:**
+##Technologies & Tools used
 -  Spring web
 -  JPA
 -  Lombok
@@ -18,8 +15,13 @@ This application uses a PostgreSQL database.
 -  IntelliJ IDEA
 -  Postman
 -  Docker
+-  React
+-  Javascript
+-  Bootstrap
+-  HTML
+-  CSS
 
-address: localhost:8080
+##Backend API
 
 - **Creating new user:**  
   POST: /customers
@@ -43,15 +45,25 @@ address: localhost:8080
         "status": (default is UNAVAILABLE) Status {AVAILABLE, UNAVAILABLE, RENTED}
         "isbn": 9788375781557
   }</code></pre>
+- **Updating a book:**  
+    PUT: /books
+    <pre><code>{
+        "id": 1,
+        "bookTitle": "Szpony i kły",
+        "author": "Andrzej Sapkowski",
+        "publisher": "superNOWA",
+        "status": (default is UNAVAILABLE) Status {AVAILABLE, UNAVAILABLE, RENTED}
+        "isbn": 9788375781557
+    }</code></pre>
 - **Delete book:**  
-  DELETE /books/isbn  
+  DELETE: /books/id  
 - **Displaying all books:**  
   GET: /books  
 - **Renting a book:**  
   POST: /rentals  
   <pre><code>{
     "book": {
-      "isbn": 9788375781557
+      "id": 1
     },
     "customer": {
       "id": 4

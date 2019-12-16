@@ -23,10 +23,10 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long bookingId;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Book book;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Customer customer;
     private LocalDate issueDate = LocalDate.now();

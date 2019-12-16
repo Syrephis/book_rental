@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -119,5 +118,11 @@ class RentalControllerTest {
 
         assertEquals(new BigDecimal("5.50"), Objects.requireNonNull(customerService.getCustomer(customerToAdd.getId()).orElse(null)).getAccount());
 
+    }
+
+    //TODO
+    @Test
+    void returnBookByISBN() {
+        fail("Implement");
     }
 }

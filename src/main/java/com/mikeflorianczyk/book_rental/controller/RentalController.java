@@ -43,4 +43,9 @@ public class RentalController {
     public ResponseEntity<String> returnBook(@PathVariable Long bookingId) {
         return rentalService.returnBook(bookingId);
     }
+
+    @PutMapping("/ISBN/{ISBN}")
+    public ResponseEntity<String> returnBookByISBN(@PathVariable String ISBN) {
+        return rentalService.returnBookByISBN(ISBN);
+    }
 }

@@ -1,9 +1,11 @@
 package com.mikeflorianczyk.book_rental.service;
 
+import com.mikeflorianczyk.book_rental.model.Book;
 import com.mikeflorianczyk.book_rental.model.Rental;
 import com.mikeflorianczyk.book_rental.model.Status;
 import com.mikeflorianczyk.book_rental.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,21 @@ public class RentalService {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //TODO  Learn about tranzakcyjność :D
+    public ResponseEntity<String> returnBookByISBN(String ISBN) {
+        Rental rental = new Rental();
+        Book book = new Book();
+        book.setISBN(ISBN);
+        book.setStatus(null);
+        rental.setBook(book);
+        rental.setIssueDate(null);
+        rental.setPredictedReturnDate(null);
+
+        Example<Rental> example = Example.of(rental);
+        List<Rental> listOfExample = rentalRepository.findAll(example);
+        return returnBook(listOfExample.get(listOfExample.size()-1).getBookingId());
+    }
+
+    //TODO  Learn about transactional
     //@Transactional
 
 }

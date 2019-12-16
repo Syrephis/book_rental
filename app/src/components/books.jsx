@@ -25,7 +25,8 @@ class Books extends Component {
     isLoading: true,
     books: [],
     item: this.emptyBook,
-    rental: this.emptyRental
+    rental: this.emptyRental,
+    returnISBN: null
   };
 
   constructor(props) {
@@ -35,13 +36,16 @@ class Books extends Component {
       isLoading: true,
       books: [],
       item: this.emptyBook,
-      rental: this.emptyRental
+      rental: this.emptyRental,
+      returnISBN: null
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRental = this.handleRental.bind(this);
     this.handleRentalChange = this.handleRentalChange.bind(this);
+    this.handleReturn = this.handleReturn.bind(this);
+    this.handleReturnChange = this.handleReturnChange.bind(this);
   }
 
   // {
@@ -80,6 +84,28 @@ class Books extends Component {
     });
   }
 
+  async handleReturn(event) {
+    event.preventDefault();
+    const returnISBN = this.state.returnISBN;
+
+    console.log(returnISBN);
+    await fetch("/rentals/ISBN/" + returnISBN, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+    window.location.reload();
+  }
+
+  handleReturnChange(event) {
+    const target = event.target;
+    const value = target.value;
+
+    this.setState({ returnISBN: value });
+  }
+
   handleChange(event) {
     const target = event.target;
     const value = target.value;
@@ -103,7 +129,8 @@ class Books extends Component {
       body: JSON.stringify(item)
     });
     console.log(JSON.stringify(item));
-    this.props.history.push("/books");
+    //this.props.history.push("/books");
+    window.location.reload();
   }
 
   handleRentalChange(event) {
@@ -122,8 +149,9 @@ class Books extends Component {
     await fetch("/books/ISBN/" + rental.book.isbn)
       .then(response => response.json())
       .then(json => {
-        this.setState({ rental: json });
-        console.log(json);
+        //This shouldn't be like that
+        rental["book"]["id"] = json.id;
+        this.setState({ rental });
       });
 
     await fetch("/rentals", {
@@ -135,6 +163,7 @@ class Books extends Component {
       body: JSON.stringify(rental)
     });
     console.log(JSON.stringify(rental));
+    window.location.reload();
   }
 
   render() {
@@ -203,6 +232,30 @@ class Books extends Component {
                     </form>
                   </div>
                 </div>
+
+                <div className="card my-4 border-0 shadow-sm">
+                  <h5 className="card-header">Return</h5>
+                  <div className="card-body">
+                    <form onSubmit={this.handleReturn}>
+                      <div className="form-group">
+                        <label htmlFor="exampleFormControlInput1">ISBN</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="book.isbn"
+                          name="book.isbn"
+                          onChange={this.handleReturnChange}
+                          placeholder="9788375781557"></input>
+                      </div>
+                      <button
+                        className="btn btn-primary btn-block"
+                        type="submit">
+                        Return
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
                 <button
                   type="button"
                   className="btn btn-primary btn-block"

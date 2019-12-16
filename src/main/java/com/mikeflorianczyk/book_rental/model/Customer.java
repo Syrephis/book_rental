@@ -28,10 +28,7 @@ public class Customer {
     @Column(nullable = false)
     private String firstName, lastName;
     @Column(nullable = false)
-    //TODO BigDecimal
     private BigDecimal account = new BigDecimal("0.0");
-    //@OneToMany(mappedBy = "customer")
-    //private List<Rental> rentals;
 
     public Customer(String firstName, String lastName, BigDecimal account) {
         this.firstName = firstName;

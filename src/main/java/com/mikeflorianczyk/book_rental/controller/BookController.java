@@ -24,7 +24,6 @@ public class BookController {
 
     private final BookService bookService;
 
-    //TODO Filtering
     @GetMapping
     public List<Book> findAll() {
         return bookService.findAll();

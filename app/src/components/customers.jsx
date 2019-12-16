@@ -4,10 +4,29 @@ import NavBar from "./navBar";
 import { FaSearch, FaPlus } from "react-icons/fa";
 
 class Customers extends Component {
+  emptyCustomer = {
+    firstName: null,
+    lastName: null
+  };
+
   state = {
     isLoading: true,
-    customers: []
+    customers: [],
+    customer: this.emptyCustomer
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: true,
+      customers: [],
+      customer: this.emptyCustomer
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
   async componentDidMount() {
     await fetch("/customers")
@@ -15,6 +34,33 @@ class Customers extends Component {
       .then(json => {
         this.setState({ customers: json, isLoading: false });
       });
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    let customer = { ...this.state.customer };
+    customer[name] = value;
+    this.setState({ customer });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    const customer = this.state.customer;
+
+    await fetch("/customers", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(customer)
+    });
+    console.log(JSON.stringify(customer));
+    //this.props.history.push("/books");
+    window.location.reload();
   }
 
   render() {
@@ -30,7 +76,7 @@ class Customers extends Component {
       return (
         <div>
           <NavBar />
-          <div className="container-xl">
+          <div className="container-fluid">
             <div className="row">
               <div className="col-md-3">
                 <div className="card my-4 border-0 shadow-sm">
@@ -78,7 +124,7 @@ class Customers extends Component {
                         </button>
                       </div>
                       <div className="modal-body">
-                        <form>
+                        <form id="newCustomerForm" onSubmit={this.handleSubmit}>
                           <div className="form-group">
                             <label htmlFor="exampleFormControlInput1">
                               First name
@@ -87,6 +133,8 @@ class Customers extends Component {
                               type="text"
                               className="form-control"
                               id="firstName"
+                              name="firstName"
+                              onChange={this.handleChange}
                               placeholder="Adam"></input>
                           </div>
                           <div className="form-group">
@@ -97,6 +145,8 @@ class Customers extends Component {
                               type="text"
                               className="form-control"
                               id="lastName"
+                              name="lastName"
+                              onChange={this.handleChange}
                               placeholder="Nowak"></input>
                           </div>
                         </form>
@@ -108,7 +158,10 @@ class Customers extends Component {
                           data-dismiss="modal">
                           Cancel
                         </button>
-                        <button type="submit" className="btn btn-primary">
+                        <button
+                          type="submit"
+                          form="newCustomerForm"
+                          className="btn btn-primary">
                           <FaPlus /> {" Add"}
                         </button>
                       </div>
@@ -132,7 +185,7 @@ class Customers extends Component {
                           <tr key={customer.id}>
                             <td>{customer.firstName}</td>
                             <td>{customer.lastName}</td>
-                            <td>{customer.account}</td>
+                            <td>{customer.account.toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>
